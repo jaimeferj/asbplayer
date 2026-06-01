@@ -6,6 +6,7 @@ import {
     TokenReadingAnnotation,
     TokenFrequencyAnnotation,
     VideoSubtitleSplitBehavior,
+    TokenPitchAccentAnnotation,
 } from './settings';
 import { validateSettings } from './settings-import-export';
 import { defaultSettings } from './settings-provider';
@@ -175,6 +176,7 @@ it('validates exported settings', () => {
                 dictionaryYomitanScanLength: 16,
                 dictionaryTokenReadingAnnotation: TokenReadingAnnotation.UNKNOWN_OR_BELOW,
                 dictionaryDisplayIgnoredTokenReadings: true,
+                dictionaryTokenPitchAccentAnnotation: TokenPitchAccentAnnotation.UNKNOWN_OR_BELOW,
                 dictionaryTokenFrequencyAnnotation: TokenFrequencyAnnotation.ALWAYS,
                 dictionaryAnkiDecks: ['Default'],
                 dictionaryAnkiWordFields: ['Word', 'Expression'],
@@ -209,6 +211,7 @@ it('validates exported settings', () => {
                 dictionaryYomitanScanLength: 12,
                 dictionaryTokenReadingAnnotation: TokenReadingAnnotation.ALWAYS,
                 dictionaryDisplayIgnoredTokenReadings: false,
+                dictionaryTokenPitchAccentAnnotation: TokenPitchAccentAnnotation.ALWAYS,
                 dictionaryTokenFrequencyAnnotation: TokenFrequencyAnnotation.UNCOLLECTED_ONLY,
                 dictionaryAnkiDecks: [],
                 dictionaryAnkiWordFields: [],
@@ -243,6 +246,7 @@ it('validates exported settings', () => {
                 dictionaryYomitanScanLength: 8,
                 dictionaryTokenReadingAnnotation: TokenReadingAnnotation.NEVER,
                 dictionaryDisplayIgnoredTokenReadings: true,
+                dictionaryTokenPitchAccentAnnotation: TokenPitchAccentAnnotation.NEVER,
                 dictionaryTokenFrequencyAnnotation: TokenFrequencyAnnotation.NEVER,
                 dictionaryAnkiDecks: [],
                 dictionaryAnkiWordFields: [],

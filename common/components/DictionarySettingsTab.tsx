@@ -37,6 +37,7 @@ import {
     Profile,
     dictionaryStatusCollectionEnabled,
     TokenFrequencyAnnotation,
+    TokenPitchAccentAnnotation,
     TokenStatusConfig,
     textSubtitleSettingsForTrack,
     TextSubtitleSettings,
@@ -343,6 +344,7 @@ interface Props {
     supportsDictionaryBrowser: boolean;
     supportsDictionaryWaniKani: boolean;
     supportsDictionaryMatchAcrossScripts: boolean;
+    supportsDictionaryTokenPitchAccentAnnotation: boolean;
     supportsDictionaryTokenStatusDisplayAlpha: boolean;
     supportsDictionaryYomitanMecab: boolean;
     onSettingChanged: <K extends keyof AsbplayerSettings>(key: K, value: AsbplayerSettings[K]) => Promise<void>;
@@ -359,6 +361,7 @@ const DictionarySettingsTab: React.FC<Props> = ({
     supportsDictionaryBrowser,
     supportsDictionaryWaniKani,
     supportsDictionaryMatchAcrossScripts,
+    supportsDictionaryTokenPitchAccentAnnotation,
     supportsDictionaryTokenStatusDisplayAlpha,
     supportsDictionaryYomitanMecab,
     onSettingChanged,
@@ -986,6 +989,91 @@ const DictionarySettingsTab: React.FC<Props> = ({
                     label={t('settings.dictionaryDisplayIgnoredTokenReadings')}
                     labelPlacement="start"
                 />
+                {supportsDictionaryTokenPitchAccentAnnotation && (
+                    <FormControl>
+                        <FormLabel component="legend">{t('settings.dictionaryTokenPitchAccentAnnotation')}</FormLabel>
+                        <RadioGroup row={false}>
+                            <LabelWithHoverEffect
+                                control={
+                                    <Radio
+                                        checked={
+                                            selectedDictionary.dictionaryTokenPitchAccentAnnotation ===
+                                            TokenPitchAccentAnnotation.ALWAYS
+                                        }
+                                        onChange={() => {
+                                            const newTracks = [...dictionaryTracks];
+                                            newTracks[selectedDictionaryTrack] = {
+                                                ...newTracks[selectedDictionaryTrack],
+                                                dictionaryTokenPitchAccentAnnotation: TokenPitchAccentAnnotation.ALWAYS,
+                                            };
+                                            onSettingChanged('dictionaryTracks', newTracks);
+                                        }}
+                                    />
+                                }
+                                label={t('settings.dictionaryTokenReadingAnnotationAlways')}
+                            />
+                            <LabelWithHoverEffect
+                                control={
+                                    <Radio
+                                        checked={
+                                            selectedDictionary.dictionaryTokenPitchAccentAnnotation ===
+                                            TokenPitchAccentAnnotation.LEARNING_OR_BELOW
+                                        }
+                                        onChange={() => {
+                                            const newTracks = [...dictionaryTracks];
+                                            newTracks[selectedDictionaryTrack] = {
+                                                ...newTracks[selectedDictionaryTrack],
+                                                dictionaryTokenPitchAccentAnnotation:
+                                                    TokenPitchAccentAnnotation.LEARNING_OR_BELOW,
+                                            };
+                                            onSettingChanged('dictionaryTracks', newTracks);
+                                        }}
+                                    />
+                                }
+                                label={t('settings.dictionaryTokenReadingAnnotationLearningOrBelow')}
+                            />
+                            <LabelWithHoverEffect
+                                control={
+                                    <Radio
+                                        checked={
+                                            selectedDictionary.dictionaryTokenPitchAccentAnnotation ===
+                                            TokenPitchAccentAnnotation.UNKNOWN_OR_BELOW
+                                        }
+                                        onChange={() => {
+                                            const newTracks = [...dictionaryTracks];
+                                            newTracks[selectedDictionaryTrack] = {
+                                                ...newTracks[selectedDictionaryTrack],
+                                                dictionaryTokenPitchAccentAnnotation:
+                                                    TokenPitchAccentAnnotation.UNKNOWN_OR_BELOW,
+                                            };
+                                            onSettingChanged('dictionaryTracks', newTracks);
+                                        }}
+                                    />
+                                }
+                                label={t('settings.dictionaryTokenReadingAnnotationUnknownOrBelow')}
+                            />
+                            <LabelWithHoverEffect
+                                control={
+                                    <Radio
+                                        checked={
+                                            selectedDictionary.dictionaryTokenPitchAccentAnnotation ===
+                                            TokenPitchAccentAnnotation.NEVER
+                                        }
+                                        onChange={() => {
+                                            const newTracks = [...dictionaryTracks];
+                                            newTracks[selectedDictionaryTrack] = {
+                                                ...newTracks[selectedDictionaryTrack],
+                                                dictionaryTokenPitchAccentAnnotation: TokenPitchAccentAnnotation.NEVER,
+                                            };
+                                            onSettingChanged('dictionaryTracks', newTracks);
+                                        }}
+                                    />
+                                }
+                                label={t('settings.dictionaryTokenReadingAnnotationNever')}
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                )}
                 <FormControl>
                     <FormLabel component="legend">{t('settings.dictionaryTokenFrequencyAnnotation')}</FormLabel>
                     <RadioGroup row={false}>
@@ -1896,8 +1984,8 @@ const DictionarySettingsTab: React.FC<Props> = ({
                                                             frequency,
                                                             __internal: true,
                                                         } as InternalToken,
-                                                        true,
-                                                        displayingDictionaryTrack
+                                                        {},
+                                                        { allowAsciiReading: true, dt: displayingDictionaryTrack }
                                                     ),
                                                 }}
                                             />
